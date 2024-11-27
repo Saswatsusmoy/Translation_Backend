@@ -9,6 +9,16 @@ app = Flask(__name__)
 speech_key = "3fcc10f1c7fc4c82af2cb58912dbbe9f"
 service_region = "centralindia"
 
+# Home route
+@app.route('/', methods=['GET'])
+def home():
+    return "Welcome to the Speech Translation API! Use the /translate endpoint to upload audio files.", 200
+
+# Favicon route
+@app.route('/favicon.ico')
+def favicon():
+    return '', 204
+
 # Function to handle real-time translation
 def translate_audio_stream(wav_file_path):
     translation_config = speechsdk.translation.SpeechTranslationConfig(
@@ -70,4 +80,5 @@ def translate():
         return {"error": str(e)}, 500
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
